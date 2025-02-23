@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base, get_session
+from app.database import Base, get_session, sessionLocal
 
 class User(Base):
     __tablename__ = "user"
@@ -42,26 +42,26 @@ class TaskStatus(Base):
     tasks = relationship("Task", back_populates="status")
 
 def initialize_lookup_tables():
-    session = get_session()  
-    try:
-        priorities = ["Low", "Medium", "High"]
-        for i, name in enumerate(priorities, start=1):
-            if not session.query(TaskPriority).filter_by(priority_name=name).first():
-                session.add(TaskPriority(priority_id=i, priority_name=name))
+    with sessionLocal() as session: 
+        try:
+            priorities = ["Low", "Medium", "High"]
+            for i, name in enumerate(priorities, start=1):
+                if not session.query(TaskPriority).filter_by(priority_name=name).first():
+                    session.add(TaskPriority(priority_id=i, priority_name=name))
 
-        statuses = ["To Do", "In Progress", "Completed"]
-        for i, name in enumerate(statuses, start=1):
-            if not session.query(TaskStatus).filter_by(status_name=name).first():
-                session.add(TaskStatus(status_id=i, status_name=name))
+            statuses = ["To Do", "In Progress", "Completed"]
+            for i, name in enumerate(statuses, start=1):
+                if not session.query(TaskStatus).filter_by(status_name=name).first():
+                    session.add(TaskStatus(status_id=i, status_name=name))
 
-        session.commit()
+            session.commit()
 
-    except Exception as e:
-        session.rollback() 
-        print(f"Error Creating Tables: {e}")
-    
-    finally:
-        session.close()
+        except Exception as e:
+            session.rollback() 
+            print(f"Error Creating Tables: {e}")
+        
+        finally:
+            session.close()
 
 
 

@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+
 import os
 
 load_dotenv()
@@ -14,4 +15,8 @@ def create_tables():
     Base.metadata.create_all(bind=engine)
 
 def get_session():
-    return sessionLocal()
+    db = sessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
