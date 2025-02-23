@@ -7,7 +7,7 @@ interface LoginRowProps {
 
 export default function LoginRow({name, textType, variable, functionName}: LoginRowProps){
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         functionName(e.target.value)
     }
 
