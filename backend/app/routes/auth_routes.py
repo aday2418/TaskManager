@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from app.database import get_session
@@ -23,10 +23,19 @@ def register(user: AuthRequest, db: Session = Depends(get_session)):
     return {"message": "Registered Successfully"}
 
 @router.post("/login")
-def login(user: AuthRequest, db: Session = Depends(get_session)):
+def login(response: Response, user: AuthRequest, db: Session = Depends(get_session)):
     userVal = db.query(User).filter(User.username == user.username).first()
     if not user or not verify_password(user.password, userVal.password_hash):
         raise HTTPException(status_code=401, detail="Invalid Username Or Password")
     
     token = create_access_token(userVal.user_id)
-    return {"access_token": token, "token_type": "bearer", "message": "Successful Login!"}
+    
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,  
+        secure=True, 
+        samesite="Lax",
+    )
+
+    return {"message": "Successful Login!"}

@@ -23,10 +23,30 @@ export default function Home() {
     setPassword(newPass)
   }
 
-  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault(); 
-    console.log("In Login")
-    //Add authentication here + route to dashboard after
+    console.log("In Login");
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }), 
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.detail || "Login Failed");
+        }
+
+        console.log("User Logged In", data);
+        
+    } catch (error) {
+        console.error("Error logging in:", error);
+    }
   };
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
