@@ -11,7 +11,7 @@ export default function dashboard(){
                     <button className={buttonStyle} type="button" >Logout</button>
                 </nav>
             </header>
-            <div className="flex h-full w-full bg-gray-500">
+            <div className="flex h-[calc(100vh-100px)] w-full bg-gray-500">
                 <StatusColumn columnName="TO DO" bgColor="bg-blue-300"/>
                 <StatusColumn columnName="IN PROGRESS" bgColor="bg-yellow-300"/>
                 <StatusColumn columnName="COMPLETED" bgColor="bg-green-300"/>
