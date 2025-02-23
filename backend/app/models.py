@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from database import Base, get_session
+from app.database import Base, get_session
 
 class User(Base):
     __tablename__ = "user"
@@ -11,14 +11,6 @@ class User(Base):
     password_hash = Column(String, nullable=False)
 
     tasks = relationship("Task", back_populates="owner", cascade="all, delete")
-    
-    def set_password(self, password):
-        #Need to write this still to hash
-        pass
-
-    def check_password(self, password):
-        #Need to write this to decode
-        pass
 
 class Task(Base):
     __tablename__ = "task"
