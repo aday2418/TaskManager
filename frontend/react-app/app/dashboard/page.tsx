@@ -1,3 +1,5 @@
+import StatusColumn from "@/components/StatusColumn";
+
 export default function dashboard(){
     const buttonStyle = "flex min-w-[130px] bg-blue-200 border rounded-md border-black justify-center px-4";
 
@@ -9,16 +11,12 @@ export default function dashboard(){
                     <button className={buttonStyle} type="button" >Logout</button>
                 </nav>
             </header>
-            <div className="flex flex-col h-full bg-white items-center justify-center gap-10">
-                <h1 className="text-7xl">Welcome To Task Manager</h1>
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="flex flex-col max-w-[320px] gap-2"/>
-                    <div className="flex flex-row gap-2">
-                        <button className="" type="button" >Login</button>
-                        <button className="{buttonStyle}" type="button" >Create Account</button>
-                    </div>
-                </div>
+            <div className="flex h-full w-full bg-gray-500">
+                <StatusColumn columnName="TO DO" bgColor="bg-blue-300"/>
+                <StatusColumn columnName="IN PROGRESS" bgColor="bg-yellow-300"/>
+                <StatusColumn columnName="COMPLETED" bgColor="bg-green-300"/>
             </div>
+            
         </div>
     )
 }
