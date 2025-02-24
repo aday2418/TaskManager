@@ -3,6 +3,14 @@ import datetime
 import bcrypt
 import os
 from dotenv import load_dotenv
+from sqlalchemy.orm import Session
+from app.database import get_session
+from fastapi import Depends, HTTPException, Request
+from app.models import User
+
+
+
+
 
 load_dotenv()
 
@@ -26,3 +34,18 @@ def hash_password(password: str):
 
 def verify_password(plain_password: str, hashed_password: str):
     return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
+
+def get_current_user(request: Request, db: Session = Depends(get_session)):
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(status_code=401, detail="No token provided")
+
+    user_id = verify_access_token(token)
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user
