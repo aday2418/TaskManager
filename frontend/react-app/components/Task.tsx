@@ -3,12 +3,25 @@
 import { deleteTask } from "@/actions/deleteTask";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from 'next/navigation';
+import { updateTask } from "@/actions/updateTask";
+import { createTask } from "@/actions/createTask";
 
-export default function Task({taskName, taskDescription, taskID}: {taskName: string, taskDescription: string, taskID: string}){
+export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void}){
+
     const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(isNew);
+    const [editedName, setEditedName] = useState(taskName);
+    const [editedPriority, setEditedPriority] = useState<number>(taskDescription);
+    
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const router = useRouter();
+
+    const priorityColor: Record<number,string> = {
+        1: "bg-green-200",  
+        2: "bg-yellow-200", 
+        3: "bg-red-300"    
+    };
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -29,18 +42,53 @@ export default function Task({taskName, taskDescription, taskID}: {taskName: str
         }
     };
 
-    return (
-        <div className="relative flex flex-col w-full h-fit border border-black rounded-lg bg-gray-100 p-4">
-            <div className="flex justify-between w-full items-center">
-                <div className="text-xl font-bold">{taskName}</div>
-                <button className="text-xl font-bold px-2 cursor-pointer" onClick={() => setDropdownOpen(!isDropdownOpen)}>
-                    ...
-                </button>
-            </div>
+    const handleSave = async () => {
+        setIsEditing(false);
+        if (isNew && onCreate) {
+            onCreate(editedName, editedPriority);
+        }else{
+            const success = await updateTask(taskID, editedName, editedPriority, taskStatus);
+            if (success) {
+                console.log("Updated Task");
+                router.refresh();
+            }
+        }
+    };
+    const handleCancel = async () => { //THIS NEEDS FIXED - NOT WORKING FOR CREATING NEW TASKS THAT WERENT SAVED
+        setIsEditing(false);
+        router.refresh();
+    };
 
+    return (
+        <div className={`relative flex flex-col w-full h-fit border border-black rounded-lg ${priorityColor[taskDescription]} p-4`}>
+            <div className="flex justify-between items-start w-full">
+                <div className="flex flex-col w-3/4">
+                    {isEditing ? (<input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} className="border border-black rounded px-2 py-1 w-full"/>) : (<div className="text-xl font-bold">{taskName}</div>)}
+                    
+                    {isEditing ? (
+                        <select value={editedPriority} onChange={(e) => setEditedPriority(Number(e.target.value))} className="border border-black rounded px-2 py-1 w-full mt-2">
+                            <option value={1}>Low</option>
+                            <option value={2}>Normal</option>
+                            <option value={3}>Urgent</option>
+                        </select>
+                    ) : (<div className="mt-2">Priority: {["Low", "Normal", "URGENT"][taskDescription - 1]}</div>)}
+                </div>
+    
+                {isEditing ? (
+                    <div className="flex flex-col gap-1">
+                        <button className="text-xl font-bold px-2 cursor-pointer bg-green-500 text-white rounded px-3 py-1" onClick={handleSave}>
+                            Save
+                        </button>
+                        <button className="text-xl font-bold px-2 cursor-pointer bg-red-500 text-white rounded px-3 py-1" onClick={handleCancel}>
+                            Cancel
+                        </button>
+                    </div>
+                ) : (<button className="text-xl font-bold px-2 cursor-pointer" onClick={() => setDropdownOpen(!isDropdownOpen)}>...</button>)}
+            </div>
+    
             {isDropdownOpen && (
                 <div ref={dropdownRef} className="absolute right-2 w-32">
-                    <button className="w-full px-4 rounded my-1 border bg-white border-black text-left hover:bg-gray-200" onClick={() => {setDropdownOpen(false);}}>
+                    <button className="w-full px-4 rounded my-1 border bg-white border-black text-left hover:bg-gray-200" onClick={() => {setDropdownOpen(false); setIsEditing(true);}}>
                         Edit Task
                     </button>
                     <button className="w-full px-4 rounded border bg-white border-black text-left hover:bg-gray-200" onClick={handleDelete}>
@@ -48,8 +96,6 @@ export default function Task({taskName, taskDescription, taskID}: {taskName: str
                     </button>
                 </div>
             )}
-
-            <div className="mt-2">{taskDescription}</div>
         </div>
-    )
+    );
 }

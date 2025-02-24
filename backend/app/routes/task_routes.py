@@ -14,7 +14,7 @@ class TaskRequest(BaseModel):
     task_priority_id: int
     task_status_id: int
 
-@router.post("/tasks")
+@router.post("/")
 def add_task(task: TaskRequest, user: User = Depends(get_current_user), db: Session = Depends(get_session)):
     new_task = Task(
         task_id=str(uuid.uuid4()),

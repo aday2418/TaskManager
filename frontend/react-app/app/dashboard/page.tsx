@@ -22,9 +22,9 @@ export default async function dashboard(){
                 </nav>
             </header>
             <div className="flex h-[calc(100vh-100px)] w-full bg-gray-500">
-                <StatusColumn columnName="TO DO" bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 1)}/>
-                <StatusColumn columnName="IN PROGRESS" bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 2)}/>
-                <StatusColumn columnName="COMPLETED" bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 3)}/>
+                <StatusColumn status={1} bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 1)}/>
+                <StatusColumn status={2} bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 2)}/>
+                <StatusColumn status={3} bgColor="bg-gray-200" tasks={tasks.filter(task => task.task_status_id === 3)}/>
             </div>
             
         </div>
