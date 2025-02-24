@@ -11,7 +11,7 @@ export default function StatusColumn({bgColor, columnName, tasks}: {bgColor: str
             </div>
             <div className="flex flex-col w-full overflow-y-auto max-h-[calc(100vh-150px)] gap-4">
                 {tasks.map((task) => (
-                    <Task key={task.task_id} taskName={task.task_name} taskDescription={`Priority: ${task.task_priority_id}`} />
+                    <Task taskID={task.task_id} key={task.task_id} taskName={task.task_name} taskDescription={`Priority: ${task.task_priority_id}`} />
                 ))}
                 
             </div>
