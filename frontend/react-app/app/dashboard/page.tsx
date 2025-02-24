@@ -1,5 +1,5 @@
+import LogoutButton from "@/components/LogoutButton";
 import MainDashboard from "@/components/MainDashboard";
-import StatusColumn from "@/components/StatusColumn";
 import { fetchTasks } from "@/lib/fetchTasks";
 
 
@@ -18,7 +18,7 @@ export default async function dashboard(){
             <header>
                 <nav className="flex justify-between h-[100px] border-b border-black bg-slate-400 items-center gap-5 px-4">
                     <h1 className="font-mono text-2xl font-bold">Task Manager - Dashboard</h1>
-                    <button className={"flex min-w-[130px] bg-red-500 border border-2 rounded-md border-black justify-center font-bold px-4"} type="button" >Logout</button>
+                    <LogoutButton/>
                 </nav>
             </header>
             <MainDashboard initialTasks={tasks} />
