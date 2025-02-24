@@ -7,7 +7,7 @@ import LoginRow from "../components/LoginRow";
 import login from '../lib/login';
 
 export default function Login(){
-  const buttonStyle = "flex min-w-[130px] bg-red-200 border rounded-md border-black justify-center px-4";
+  const buttonStyle = "flex min-w-[130px] bg-slate-400 border rounded-md border-black justify-center px-4";
 
   const router = useRouter()
 
@@ -46,7 +46,7 @@ export default function Login(){
   return (
     <div className="relative w-full h-screen flex flex-col">
       <header>
-        <nav className="flex h-[100px] border-b border-black bg-red-200 items-center gap-5 px-4">
+        <nav className="flex h-[100px] border-b border-black bg-slate-400 items-center gap-5 px-4">
           <h1 className="font-mono text-2xl font-bold">Task Manager</h1>
         </nav>
       </header>

@@ -16,9 +16,9 @@ export default async function dashboard(){
     return(
         <div className="relative w-full h-screen flex flex-col">
             <header>
-                <nav className="flex justify-between h-[100px] border-b border-black bg-red-200 items-center gap-5 px-4">
+                <nav className="flex justify-between h-[100px] border-b border-black bg-slate-400 items-center gap-5 px-4">
                     <h1 className="font-mono text-2xl font-bold">Task Manager - Dashboard</h1>
-                    <button className={"flex min-w-[130px] bg-red-500 border rounded-md border-black justify-center px-4"} type="button" >Logout</button>
+                    <button className={"flex min-w-[130px] bg-red-500 border border-2 rounded-md border-black justify-center font-bold px-4"} type="button" >Logout</button>
                 </nav>
             </header>
             <div className="flex h-[calc(100vh-100px)] w-full bg-gray-500">

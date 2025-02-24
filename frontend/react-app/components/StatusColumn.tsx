@@ -13,6 +13,9 @@ export default function StatusColumn({bgColor, status, tasks}: {bgColor: string,
     const [newTasks, setNewTasks] = useState<TaskType[]>([]);
     const taskListRef = useRef<HTMLDivElement>(null);
 
+    const sortedTasks = [...tasks, ...newTasks].sort((a, b) => b.task_priority_id - a.task_priority_id);
+
+
     const statusNames: Record<number, string> = {
         1: "To Do",
         2: "In Progress",
@@ -50,13 +53,14 @@ export default function StatusColumn({bgColor, status, tasks}: {bgColor: string,
         }
     };
 
+
     return(
         <div className={`flex flex-col w-1/3 h-full ${bgColor} border border-black items-center justify-top px-8`}>
             <div className="py-10 text-3xl font-bold">
                 {statusNames[status]}
             </div>
             <div ref={taskListRef} className="flex flex-col w-full overflow-y-auto max-h-[calc(100vh-150px)] gap-4">
-                {tasks.map((task) => (
+                {sortedTasks.map((task) => (
                     <Task taskID={task.task_id} key={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} />
                 ))}
                 {newTasks.map((task) => (
