@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateTask } from "@/actions/updateTask";
 import { createTask } from "@/actions/createTask";
 
-export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate, cancelTask, refreshTasks}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void, cancelTask?: ()=>void, refreshTasks?: ()=>void}){
+export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate, cancelTask, refreshTasks}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void, cancelTask?: ()=>void, refreshTasks: ()=>void}){
 
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(isNew);
@@ -38,7 +38,7 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
         const success = await deleteTask(taskID);
         if (success) {
             console.log("Deleted Task")
-            router.refresh() 
+            refreshTasks()
         }
     };
 
@@ -46,12 +46,12 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
         setIsEditing(false);
         if (isNew && onCreate) {
             onCreate(editedName, editedPriority);
-            refreshTasks && refreshTasks()
+            refreshTasks()
         }else{
             const success = await updateTask(taskID, editedName, editedPriority, taskStatus);
             if (success) {
                 console.log("Updated Task");
-                router.refresh();
+                refreshTasks()
             }
         }
     };

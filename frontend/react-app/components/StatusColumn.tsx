@@ -81,7 +81,7 @@ export default function StatusColumn({bgColor, status, tasks, onTaskDrop, refres
             </div>
             <div ref={taskListRef} className="flex flex-col w-full overflow-y-auto max-h-[calc(100vh-150px)] gap-4">
                 {sortedTasks.map((task) => (
-                    <Task taskID={task.task_id} key={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} />
+                    <Task taskID={task.task_id} key={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} refreshTasks={refreshTasks} />
                 ))}
                 {newTasks.map((task) => (
                     <Task key={task.task_id} taskID={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} isNew={true} onCreate={handleCreateTask} cancelTask={cancelTask} refreshTasks={refreshTasks}/>
