@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateTask } from "@/actions/updateTask";
 import { createTask } from "@/actions/createTask";
 
-export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void}){
+export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate, cancelTask, refreshTasks}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void, cancelTask?: ()=>void, refreshTasks?: ()=>void}){
 
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(isNew);
@@ -46,6 +46,7 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
         setIsEditing(false);
         if (isNew && onCreate) {
             onCreate(editedName, editedPriority);
+            refreshTasks && refreshTasks()
         }else{
             const success = await updateTask(taskID, editedName, editedPriority, taskStatus);
             if (success) {
@@ -54,13 +55,18 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
             }
         }
     };
-    const handleCancel = async () => { //THIS NEEDS FIXED - NOT WORKING FOR CREATING NEW TASKS THAT WERENT SAVED
-        setIsEditing(false);
-        router.refresh();
+    const handleCancel = async () => { 
+        cancelTask && cancelTask()
+    };
+
+
+    const handleDragStart = (e: React.DragEvent) => {
+        e.dataTransfer.setData("taskID", taskID);
+        e.dataTransfer.setData("taskStatus", taskStatus.toString());
     };
 
     return (
-        <div className={`relative flex flex-col w-full h-fit border border-black rounded-lg ${priorityColor[taskDescription]} p-4`}>
+        <div className={`relative flex flex-col w-full h-fit border border-black rounded-lg ${priorityColor[taskDescription]} p-4`} draggable={!isEditing} onDragStart={handleDragStart}>
             <div className="flex justify-between items-start w-full">
                 <div className="flex flex-col w-3/4">
                     {isEditing ? (<input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} className="border border-black rounded px-2 py-1 w-full"/>) : (<div className="text-xl font-bold">{taskName}</div>)}

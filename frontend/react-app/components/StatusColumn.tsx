@@ -5,15 +5,16 @@ import Task from "./Task"
 import { TaskType } from "@/app/dashboard/page"
 import { useRouter } from "next/navigation"
 import { useState, useRef, useEffect} from "react";
+import { updateTask } from "@/actions/updateTask"
 
 
-export default function StatusColumn({bgColor, status, tasks}: {bgColor: string, status: number, tasks: TaskType[]}){
+export default function StatusColumn({bgColor, status, tasks, onTaskDrop, refreshTasks}: {bgColor: string, status: number, tasks: TaskType[], onTaskDrop:(taskID: string, newStatus: number) => void, refreshTasks: ()=>void}){
     const router = useRouter()
 
     const [newTasks, setNewTasks] = useState<TaskType[]>([]);
     const taskListRef = useRef<HTMLDivElement>(null);
 
-    const sortedTasks = [...tasks, ...newTasks].sort((a, b) => b.task_priority_id - a.task_priority_id);
+    const sortedTasks = tasks.sort((a, b) => b.task_priority_id - a.task_priority_id);
 
 
     const statusNames: Record<number, string> = {
@@ -41,21 +42,40 @@ export default function StatusColumn({bgColor, status, tasks}: {bgColor: string,
             task_priority_id: 1, 
             task_status_id: status, 
         };
-        setNewTasks([...newTasks, newTask]);
+        setNewTasks([newTask]);
     };
+
+    const cancelTask = () => {
+        setNewTasks([])
+    }
 
     const handleCreateTask = async (taskName: string, taskPriority: number) => {
         const success = await createTask(taskName, taskPriority, status); 
         if (success) {
-            console.log("Task Created Successfully");
+            console.log("Task Created Successfully")
             setNewTasks([]);
             router.refresh()
         }
     };
 
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault(); 
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        const taskID = e.dataTransfer.getData("taskID");
+        const prevStatus = Number(e.dataTransfer.getData("taskStatus"));
+
+        if (!taskID || prevStatus === status) return;
+
+        console.log(`Dropping Task ${taskID} into Column ${status}`);
+
+        onTaskDrop(taskID, status);
+    };
 
     return(
-        <div className={`flex flex-col w-1/3 h-full ${bgColor} border border-black items-center justify-top px-8`}>
+        <div className={`flex flex-col w-1/3 h-full ${bgColor} border border-black items-center justify-top px-8`} onDragOver={handleDragOver} onDrop={handleDrop}>
             <div className="py-10 text-3xl font-bold">
                 {statusNames[status]}
             </div>
@@ -64,7 +84,7 @@ export default function StatusColumn({bgColor, status, tasks}: {bgColor: string,
                     <Task taskID={task.task_id} key={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} />
                 ))}
                 {newTasks.map((task) => (
-                    <Task key={task.task_id} taskID={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} isNew={true} onCreate={handleCreateTask} />
+                    <Task key={task.task_id} taskID={task.task_id} taskName={task.task_name} taskDescription={task.task_priority_id} taskStatus={task.task_status_id} isNew={true} onCreate={handleCreateTask} cancelTask={cancelTask} refreshTasks={refreshTasks}/>
                 ))}
                 
             </div>
