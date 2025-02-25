@@ -16,7 +16,11 @@ cd TaskManager
 cp .env.example .env
 ```
 
-You can change `DATABASE_URL` to your prefered filepath
+You can change `DATABASE_URL` to your prefered filepath. The filepath should be in the following way
+
+```
+sqlite:///./app/taskmanager.db
+```
 
 You will need to generate a secret key and replace value of `SECRET_KEY`
 
