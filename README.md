@@ -1,6 +1,15 @@
 # TaskManager
 
-Task Manager is an app that ..........
+#### Task Manager is an app that lets you create, edit, and prioritize tasks!
+
+#### Task Manager includes features such as priority to help put your most urgent tasks first
+
+#### Task Manager also lets users drag and drop tasks between columns to change a task's status from To Do -> In Progress -> Complete
+
+#### Users are free to Edit or Delete tasks if needed
+
+| ![Home](frontend/react-app/public/home.png) | ![Dashboard](frontend/react-app/public/dashboard.png) |
+| ------------------------------------------- | ------------------------------------------- |
 
 # Installation Instructions 
 
@@ -9,24 +18,32 @@ Navigate to your prefered directory and clone the repository
 ```
 git clone 'insert URL here'
 ```
-## 2. Set Your Environment Variables
-Copy the `.env.example` file and rename it to `.env`
+Navigate to the cloned repo
 ```
 cd TaskManager
+```
+## 2. Set Your Environment Variables
+
+Copy the `.env.example` file and rename it to `.env`
+```
 cp .env.example .env
 ```
 
-You can change `DATABASE_URL` to your prefered filepath. The filepath should be structured in the following way
+Set your `DATABASE_URL` in the .env file. 
+
+If desired, you can change the value to your prefered filepath 
 
 ```
-sqlite:///./app/taskmanager.db
+DATABASE_URL=sqlite:///./app/taskmanager.db
 ```
 
-You will need to generate a secret key and replace value of `SECRET_KEY`
-
-Use the following command to generate your secret key and place in `.env` file
+Generate a secret key using the following command
 ```
 python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+Once generated, replace value of `SECRET_KEY` in `.env` file
+```
+SECRET_KEY=yourSecretKeyHere
 ```
 
 ## 2. Install Python Dependencies
