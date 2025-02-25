@@ -16,7 +16,7 @@ cd TaskManager
 cp .env.example .env
 ```
 
-You can change `DATABASE_URL` to your prefered filepath. The filepath should be in the following way
+You can change `DATABASE_URL` to your prefered filepath. The filepath should be structured in the following way
 
 ```
 sqlite:///./app/taskmanager.db
@@ -33,7 +33,7 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 All required python dependencies are included in the requirements.txt file located in the backend directory.
 ```
 cd backend
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ## 3. Create SQLite Database
 From `backend` directory run the `create_db.py` script. This will set up your database in SQLite and initialize your tables. 
