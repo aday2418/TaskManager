@@ -12,6 +12,7 @@ git clone 'insert URL here'
 ## 2. Set Your Environment Variables
 Copy the `.env.example` file and rename it to `.env`
 ```
+cd TaskManager
 cp .env.example .env
 ```
 
