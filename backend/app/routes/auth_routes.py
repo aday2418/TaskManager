@@ -24,7 +24,6 @@ def register(user: AuthRequest, db: Session = Depends(get_session)):
 
 @router.post("/login")
 def login(response: Response, user: AuthRequest, db: Session = Depends(get_session)):
-    print("user", user)
     userVal = db.query(User).filter(User.username == user.username).first()
     if not userVal or not verify_password(user.password, userVal.password_hash):
         raise HTTPException(status_code=401, detail="Invalid Username Or Password")
@@ -44,9 +43,7 @@ def login(response: Response, user: AuthRequest, db: Session = Depends(get_sessi
 
 @router.get("/validate")
 def validate_token(request: Request, db: Session = Depends(get_session)):
-    print("COOKIES:", request.cookies)
     token = request.cookies.get("access_token")
-    print("TOKEN:", token, request.cookies)
     if not token:
         raise HTTPException(status_code=401, detail="No token provided")
 

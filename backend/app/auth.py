@@ -9,9 +9,6 @@ from fastapi import Depends, HTTPException, Request
 from app.models import User
 
 
-
-
-
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
