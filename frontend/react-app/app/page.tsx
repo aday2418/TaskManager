@@ -14,6 +14,7 @@ export default function Login(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const changeUsername = useCallback((newUser: string) => {
     setUsername(newUser)
@@ -23,25 +24,37 @@ export default function Login(){
   }, []);
 
   const handleRegister = async () => {
+    setSuccess(null)
     setError(null);
     const { data, error } = await register(username, password);
     if(data) { 
+      setSuccess("User Registered Succesfully, Please Log In")
       console.log("User Registered:", data);
     } else {
-      setError(error);
+      printError(error)
     }
   };
 
   const handleLogin = async () => {
+    setSuccess(null)
     setError(null);
     const { data, error } = await login(username, password);
     if(data) { 
       console.log("User Logged In:", data);
       router.push('/dashboard')
     } else {
-      setError(error);
+      printError(error)
     }
   };
+
+  const printError = (error: string | null) => {
+    try {
+      const parsedError = JSON.parse(error || "{}");
+      setError(parsedError.detail || error || "An error occurred");
+    } catch {
+      setError(error || "An error occurred");
+    }
+  }
 
   return (
     <div className="relative w-full h-screen flex flex-col">
@@ -61,6 +74,8 @@ export default function Login(){
             <button className={buttonStyle} type="button" onClick={handleLogin}>Login</button>
             <button className={buttonStyle} type="button" onClick={handleRegister}>Create Account</button>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">{success}</p>}
         </div>
       </div>
     </div>

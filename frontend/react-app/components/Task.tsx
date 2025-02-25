@@ -66,7 +66,7 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
     };
 
     return (
-        <div className={`relative flex flex-col w-full h-fit border border-black rounded-lg ${priorityColor[taskDescription]} p-4`} draggable={!isEditing} onDragStart={handleDragStart}>
+        <div className={`cursor-grab active:cursor-grabbing relative flex flex-col w-full h-fit border border-black rounded-lg ${priorityColor[taskDescription]} p-4`} draggable={!isEditing} onDragStart={handleDragStart}>
             <div className="flex justify-between items-start w-full">
                 <div className="flex flex-col w-3/4">
                     {isEditing ? (<input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} className="border border-black rounded px-2 py-1 w-full"/>) : (<div className="text-xl font-bold">{taskName}</div>)}

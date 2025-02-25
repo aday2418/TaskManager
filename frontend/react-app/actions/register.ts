@@ -14,7 +14,6 @@ export default async function register(username: string, password: string): Prom
 
         return {data, error: null}; 
     } catch (error: any) {
-        console.error("Error Registering User:", error.message);
         return {data: null, error: error.message }
     }
 }
