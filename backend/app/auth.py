@@ -14,7 +14,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 def create_access_token(user_id: str):
-    payload = {"sub": user_id, "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1)}
+    payload = {"sub": user_id, "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)}
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 def verify_access_token(token: str):
