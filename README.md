@@ -44,8 +44,9 @@ python3 -m app.create_db
 Run the FastAPI server using the following command from the `backend` directory:
 
 ```
-uvicorn app.main:app --reload
+python3 -m uvicorn app.main:app --reload
 ```
+
 Note, you will have to run the app on `port 8000`. This is the default so no changes should be needed after starting the serer. 
 
 Do Not close the python terminal. You need to leave the python server running for the app to work
