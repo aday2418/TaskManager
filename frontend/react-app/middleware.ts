@@ -1,12 +1,9 @@
-import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import validate from './actions/validate';
 
 
 export async function middleware(request : NextRequest) { 
-  
-
   const token = request.cookies.get('access_token')?.value;
 
   if(!token) {

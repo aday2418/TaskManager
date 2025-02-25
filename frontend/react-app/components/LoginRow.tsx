@@ -1,14 +1,8 @@
-interface LoginRowProps {
-    name: string;
-    textType: string;
-    variable: string;
-    functionName: (value: string) => void;
-}
 
-export default function LoginRow({name, textType, variable, functionName}: LoginRowProps){
+export default function LoginRow({name, textType, variable, onChange}: {name: string, textType: string, variable: string, onChange: (value: string) => void}){
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        functionName(e.target.value)
+        onChange(e.target.value)
     }
 
     return(

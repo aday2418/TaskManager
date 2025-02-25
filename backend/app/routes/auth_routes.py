@@ -29,7 +29,6 @@ def login(response: Response, user: AuthRequest, db: Session = Depends(get_sessi
         raise HTTPException(status_code=401, detail="Invalid Username Or Password")
     
     token = create_access_token(userVal.user_id)
-    print("login token", token)
     
     response.set_cookie(
         key="access_token",

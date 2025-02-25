@@ -1,14 +1,13 @@
 'use client'
 
-import { useState, useCallback } from 'react';
+import { useState} from 'react';
 import { useRouter } from 'next/navigation'
 import register from "../actions/register";
 import LoginRow from "../components/LoginRow";
 import login from '../lib/login';
+import LoginButton from '@/components/LoginButton';
 
 export default function Login(){
-  const buttonStyle = "flex min-w-[130px] bg-slate-400 border rounded-md border-black justify-center px-4";
-
   const router = useRouter()
 
   const [username, setUsername] = useState('');
@@ -16,12 +15,13 @@ export default function Login(){
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const changeUsername = useCallback((newUser: string) => {
+  const changeUsername = (newUser: string) => {
     setUsername(newUser)
-  }, []);
-  const changePassword = useCallback((newPass: string) => {
+  };
+
+  const changePassword = (newPass: string) => {
     setPassword(newPass)
-  }, []);
+  };
 
   const handleRegister = async () => {
     setSuccess(null)
@@ -29,7 +29,6 @@ export default function Login(){
     const { data, error } = await register(username, password);
     if(data) { 
       setSuccess("User Registered Succesfully, Please Log In")
-      console.log("User Registered:", data);
     } else {
       printError(error)
     }
@@ -40,7 +39,6 @@ export default function Login(){
     setError(null);
     const { data, error } = await login(username, password);
     if(data) { 
-      console.log("User Logged In:", data);
       router.push('/dashboard')
     } else {
       printError(error)
@@ -48,12 +46,9 @@ export default function Login(){
   };
 
   const printError = (error: string | null) => {
-    try {
-      const parsedError = JSON.parse(error || "{}");
-      setError(parsedError.detail || error || "An error occurred");
-    } catch {
-      setError(error || "An error occurred");
-    }
+    setUsername('')
+    setPassword('')
+    setError(error);
   }
 
   return (
@@ -67,12 +62,12 @@ export default function Login(){
         <h1 className="text-7xl">Welcome To Task Manager</h1>
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex flex-col max-w-[320px] gap-2">
-            <LoginRow name="Username" textType="text" variable={username} functionName={changeUsername} />
-            <LoginRow name="Password" textType="password" variable={password} functionName={changePassword} />
+            <LoginRow name="Username" textType="text" variable={username} onChange={changeUsername} />
+            <LoginRow name="Password" textType="password" variable={password} onChange={changePassword} />
           </div>
           <div className="flex flex-row gap-2">
-            <button className={buttonStyle} type="button" onClick={handleLogin}>Login</button>
-            <button className={buttonStyle} type="button" onClick={handleRegister}>Create Account</button>
+            <LoginButton buttonName={"Login"} onClick={handleLogin}/>
+            <LoginButton buttonName={"Create Account"} onClick={handleRegister}/>
           </div>
           {error && <p className="text-red-500">{error}</p>}
           {success && <p className="text-green-500">{success}</p>}

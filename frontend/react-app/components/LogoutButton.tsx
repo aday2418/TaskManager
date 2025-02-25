@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation"
 export default function LogoutButton(){
     const router = useRouter()
     
-    const handleLogout = () => {
-        logout()
+    const handleLogout = async () => {
+        await logout()
         router.refresh()
     }
 

@@ -13,9 +13,11 @@ export default async function login(username: string, password: string) : Promis
         if (!response.ok) 
             throw new Error(JSON.stringify(data));
 
-            return {data, error: null}; 
+        return {data, error: null}; 
+
     } catch (error: any) {
-        return {data: null, error: error.message }
+        const response = JSON.parse(error.message)
+        return {data: null, error: response.detail }
     }
 }
 

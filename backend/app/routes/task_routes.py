@@ -26,7 +26,6 @@ def add_task(task: TaskRequest, user: User = Depends(get_current_user), db: Sess
 
     db.add(new_task)
     db.commit()
-    db.refresh(new_task)
 
     return {"message": "Task added successfully", "task": new_task}
 
@@ -57,6 +56,5 @@ def delete_task(task_id: str, user: User = Depends(get_current_user), db: Sessio
 @router.get("/")
 def get_tasks(user: User = Depends(get_current_user), db: Session = Depends(get_session)):
     tasks = db.query(Task).filter(Task.user_id == user.user_id).all()
-    print("fetching tasks", tasks)
     return {"tasks": tasks}
 

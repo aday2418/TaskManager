@@ -2,20 +2,15 @@
 
 import { deleteTask } from "@/actions/deleteTask";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from 'next/navigation';
 import { updateTask } from "@/actions/updateTask";
-import { createTask } from "@/actions/createTask";
 
 export default function Task({taskName, taskDescription, taskID, taskStatus, isNew=false, onCreate, cancelTask, refreshTasks}: {taskName: string, taskDescription: number, taskID: string, taskStatus: number, isNew?: boolean, onCreate?: (taskName: string, taskPriority: number)=>void, cancelTask?: ()=>void, refreshTasks: ()=>void}){
-
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(isNew);
     const [editedName, setEditedName] = useState(taskName);
     const [editedPriority, setEditedPriority] = useState<number>(taskDescription);
     
     const dropdownRef = useRef<HTMLDivElement>(null);
-
-    const router = useRouter();
 
     const priorityColor: Record<number,string> = {
         1: "bg-green-200",  
@@ -26,7 +21,7 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setDropdownOpen(false);
+                setIsDropdownOpen(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -34,10 +29,9 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
     }, []);
 
     const handleDelete = async () => {
-        setDropdownOpen(false); 
+        setIsDropdownOpen(false); 
         const success = await deleteTask(taskID);
         if (success) {
-            console.log("Deleted Task")
             refreshTasks()
         }
     };
@@ -50,7 +44,6 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
         }else{
             const success = await updateTask(taskID, editedName, editedPriority, taskStatus);
             if (success) {
-                console.log("Updated Task");
                 refreshTasks()
             }
         }
@@ -79,7 +72,6 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
                         </select>
                     ) : (<div className="mt-2">Priority: {["Low", "Normal", "URGENT"][taskDescription - 1]}</div>)}
                 </div>
-    
                 {isEditing ? (
                     <div className="flex flex-col gap-1">
                         <button className="text-xl font-bold px-2 cursor-pointer bg-green-500 text-white rounded px-3 py-1" onClick={handleSave}>
@@ -89,12 +81,11 @@ export default function Task({taskName, taskDescription, taskID, taskStatus, isN
                             Cancel
                         </button>
                     </div>
-                ) : (<button className="text-xl font-bold px-2 cursor-pointer" onClick={() => setDropdownOpen(!isDropdownOpen)}>...</button>)}
+                ) : (<button className="text-xl font-bold px-2 cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>...</button>)}
             </div>
-    
             {isDropdownOpen && (
                 <div ref={dropdownRef} className="absolute right-2 w-32">
-                    <button className="w-full px-4 rounded my-1 border bg-white border-black text-left hover:bg-gray-200" onClick={() => {setDropdownOpen(false); setIsEditing(true);}}>
+                    <button className="w-full px-4 rounded my-1 border bg-white border-black text-left hover:bg-gray-200" onClick={() => {setIsDropdownOpen(false); setIsEditing(true);}}>
                         Edit Task
                     </button>
                     <button className="w-full px-4 rounded border bg-white border-black text-left hover:bg-gray-200" onClick={handleDelete}>

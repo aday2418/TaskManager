@@ -7,9 +7,9 @@
 
 2. Drag and Drop between columns to change a tasks status from To Do -> In Progress -> Complete
 
-3. The ability to add, Edit, or Delete Tasks
+3. The ability to Add, Edit, or Delete Tasks
 
-4. Scrolling to keep the dashboard from overflowing if there are too many tasks to fit on-screen
+4. Scrolling to keep the dashboard from overflowing if there are too many tasks to fit on screen
 
 5. Secure authentication to keep your tasks safe!
 

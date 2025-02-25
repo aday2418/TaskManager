@@ -21,11 +21,10 @@ export async function updateTask(taskId: string, taskName: string, taskPriority:
             }),
         });
 
-        if (!response.ok) throw new Error("Failed to update task");
+        if (!response.ok) throw new Error("Failed to Update Task");
 
         return true; 
     } catch (error) {
-        console.error("Error Updating Task:", error);
         return false; 
     }
 }
