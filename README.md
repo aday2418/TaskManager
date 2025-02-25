@@ -2,11 +2,17 @@
 
 #### Task Manager is an app that lets you create, edit, and prioritize tasks!
 
-#### Task Manager includes features such as priority to help put your most urgent tasks first
+#### Task Manager includes features such as: 
+1. Priority to help put your most urgent tasks first
 
-#### Task Manager also lets users drag and drop tasks between columns to change a task's status from To Do -> In Progress -> Complete
+2. Drag and Drop between columns to change a tasks status from To Do -> In Progress -> Complete
 
-#### Users are free to Edit or Delete tasks if needed
+3. The ability to add, Edit, or Delete Tasks
+
+4. Scrolling to keep the dashboard from overflowing if there are too many tasks to fit on-screen
+
+5. Secure authentication to keep your tasks safe!
+
 
 | ![Home](frontend/react-app/public/home.png) | ![Dashboard](frontend/react-app/public/dashboard.png) |
 | ------------------------------------------- | ------------------------------------------- |
